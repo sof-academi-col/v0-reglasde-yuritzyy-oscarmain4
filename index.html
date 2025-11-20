@@ -65,6 +65,23 @@
                 </div>
             </main>
         </div>
+
+        <!-- Added modal structure for displaying individual rules -->
+        <div id="rule-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <button id="close-modal" class="close-btn">&times;</button>
+                <div class="modal-header">
+                    <span class="modal-icon">💕</span>
+                    <h2 id="modal-title">Regla #1</h2>
+                </div>
+                <div class="modal-body">
+                    <p id="modal-text">Texto de la regla aquí...</p>
+                </div>
+                <div class="modal-footer">
+                    <div class="modal-decoration">✨</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

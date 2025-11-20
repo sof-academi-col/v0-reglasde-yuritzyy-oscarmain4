@@ -33,28 +33,33 @@ const commonRules = [
 
 // State
 const currentRules = commonRules
-let currentRuleIndex = 0
+const currentRuleIndex = 0
 
 // DOM Elements
 const mainContent = document.getElementById("main-content")
 const ruleCount = document.getElementById("rule-count")
-const currentRuleNumber = document.getElementById("current-rule-number")
-const totalRulesEl = document.getElementById("total-rules")
-const ruleText = document.getElementById("rule-text")
-const prevRuleBtn = document.getElementById("prev-rule")
-const nextRuleBtn = document.getElementById("next-rule")
-const progressFill = document.getElementById("progress-fill")
+// const currentRuleNumber = document.getElementById("current-rule-number")
+// const totalRulesEl = document.getElementById("total-rules")
+// const ruleText = document.getElementById("rule-text")
+// const prevRuleBtn = document.getElementById("prev-rule")
+// const nextRuleBtn = document.getElementById("next-rule")
+// const progressFill = document.getElementById("progress-fill")
 const rulesGrid = document.getElementById("rules-grid")
+
+const ruleModal = document.getElementById("rule-modal")
+const closeModalBtn = document.getElementById("close-modal")
+const modalTitle = document.getElementById("modal-title")
+const modalText = document.getElementById("modal-text")
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
   setupEventListeners()
-  updateRuleDisplay()
+  // updateRuleDisplay()
   renderRules()
 })
 
 function setupEventListeners() {
-  // Navigation buttons
+  /*
   prevRuleBtn.addEventListener("click", () => {
     if (currentRuleIndex > 0) {
       currentRuleIndex--
@@ -68,33 +73,23 @@ function setupEventListeners() {
       updateRuleDisplay()
     }
   })
+  */
 
-  // Keyboard navigation
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft" && currentRuleIndex > 0) {
-      currentRuleIndex--
-      updateRuleDisplay()
-    } else if (e.key === "ArrowRight" && currentRuleIndex < currentRules.length - 1) {
-      currentRuleIndex++
-      updateRuleDisplay()
+  closeModalBtn.addEventListener("click", closeModal)
+
+  // Close modal when clicking outside
+  ruleModal.addEventListener("click", (e) => {
+    if (e.target === ruleModal) {
+      closeModal()
     }
   })
-}
 
-function updateRuleDisplay() {
-  // Update rule number
-  currentRuleNumber.textContent = currentRuleIndex + 1
-
-  // Update rule text
-  ruleText.textContent = currentRules[currentRuleIndex]
-
-  // Update progress bar
-  const progress = ((currentRuleIndex + 1) / currentRules.length) * 100
-  progressFill.style.width = `${progress}%`
-
-  // Update navigation buttons
-  prevRuleBtn.disabled = currentRuleIndex === 0
-  nextRuleBtn.disabled = currentRuleIndex === currentRules.length - 1
+  // Close modal with Escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !ruleModal.classList.contains("hidden")) {
+      closeModal()
+    }
+  })
 }
 
 function renderRules() {
@@ -115,6 +110,22 @@ function renderRules() {
       <div class="card-decoration"></div>
     `
 
+    card.addEventListener("click", () => {
+      openModal(rule, index)
+    })
+
     rulesGrid.appendChild(card)
   })
+}
+
+function openModal(rule, index) {
+  modalTitle.textContent = `Regla #${index + 1}`
+  modalText.textContent = rule
+  ruleModal.classList.remove("hidden")
+  document.body.style.overflow = "hidden" // Prevent scrolling when modal is open
+}
+
+function closeModal() {
+  ruleModal.classList.add("hidden")
+  document.body.style.overflow = "" // Restore scrolling
 }
