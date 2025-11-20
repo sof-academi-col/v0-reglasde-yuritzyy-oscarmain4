@@ -183,7 +183,15 @@ async function initCheckingMode() {
 
   ruleChecks.clear()
 
-  await loadExistingChecks()
+  const checklistContainer = document.getElementById("rules-checklist")
+  checklistContainer.innerHTML = '<div class="loading-spinner">Cargando reglas...</div>'
+
+  try {
+    await loadExistingChecks()
+  } catch (error) {
+    console.error("Error loading checks, continuing with empty state:", error)
+  }
+
   renderRulesChecklist()
   updateProgress()
 }
@@ -191,21 +199,25 @@ async function initCheckingMode() {
 async function loadExistingChecks() {
   const dateStr = formatDateISO(currentDate)
 
-  const { data, error } = await supabase
-    .from("rule_checks")
-    .select("*")
-    .eq("user_name", currentUser)
-    .eq("check_date", dateStr)
+  try {
+    const { data, error } = await supabase
+      .from("rule_checks")
+      .select("*")
+      .eq("user_name", currentUser)
+      .eq("check_date", dateStr)
 
-  if (error) {
-    console.error("Error loading checks:", error)
-    return
-  }
+    if (error) {
+      console.error("Error loading checks:", error)
+      return
+    }
 
-  if (data) {
-    data.forEach((check) => {
-      ruleChecks.set(check.rule_number, check.is_completed)
-    })
+    if (data) {
+      data.forEach((check) => {
+        ruleChecks.set(check.rule_number, check.is_completed)
+      })
+    }
+  } catch (e) {
+    console.error("Supabase connection error:", e)
   }
 }
 
@@ -650,6 +662,7 @@ async function downloadPDF() {
 
         doc.setTextColor(255, 215, 0)
         doc.setFontSize(16)
+        doc.setFont("helvetica", "bold")
         doc.text("💕", margin + 3, yPos + 7)
         doc.text("💕", contentWidth + margin - 5, yPos + 7)
 

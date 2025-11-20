@@ -100,7 +100,7 @@
             <div class="checking-container">
                 <div class="checking-header">
                     <div class="header-row">
-                        <h2 class="checking-title">Chequeo Diario</h2>
+                        <h2 id="checking-user" class="checking-title">Chequeo Diario</h2>
                         <div class="date-display">
                             <span id="current-date" class="date-value"></span>
                         </div>
@@ -149,6 +149,10 @@
                 <div class="user-toggle">
                     <button class="toggle-btn active" id="view-oscar">Oscar</button>
                     <button class="toggle-btn" id="view-yuritzy">Yuritzy</button>
+                </div>
+                
+                <div class="target-user-display">
+                    Viendo resultados de: <span id="target-user" class="highlight-name"></span>
                 </div>
 
                 <div id="results-status" class="results-status">
