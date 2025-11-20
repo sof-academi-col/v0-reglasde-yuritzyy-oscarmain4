@@ -30,7 +30,7 @@ const commonRules = [
   'No se puede hablar o hacer alusión a ningún ser femenino en caso de Oscar con excepción de "La familia de Salo y mi mamá y familia" y de ningún ser masculino en el caso de Yuritzy con excepción de "Su papá y sus primos y familia".',
 ]
 
-let rules = commonRules
+const rules = commonRules
 
 const SUPABASE_URL = "https://skrlsxhzhaplwtezpdqg.supabase.co"
 const SUPABASE_ANON_KEY =
@@ -70,28 +70,69 @@ function createFloatingHearts() {
 }
 
 function setupEventListeners() {
-  document.querySelectorAll(".user-btn").forEach((btn) => {
+  const userBtns = document.querySelectorAll(".user-btn")
+  const welcomeUser = document.getElementById("welcome-user")
+  const dashboardUserImg = document.getElementById("dashboard-user-img")
+  const checkModeBtn = document.getElementById("check-mode-btn")
+  const viewModeBtn = document.getElementById("view-mode-btn")
+  const backBtns = document.querySelectorAll(".back-btn")
+  const backBtnSimple = document.querySelector(".back-btn-simple")
+  const viewOscarBtn = document.getElementById("view-oscar")
+  const viewYuritzyBtn = document.getElementById("view-yuritzy")
+
+  userBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      currentUser = btn.getAttribute("data-user")
-      rules = commonRules
+      currentUser = btn.dataset.user
+      welcomeUser.textContent = currentUser
+
+      // Set dashboard image
+      if (currentUser === "Oscar") {
+        dashboardUserImg.src = "public/oscar.jpg"
+      } else {
+        dashboardUserImg.src = "public/yuritzy.jpg"
+      }
+
       showScreen("modeSelection")
-      document.getElementById("welcome-user").textContent = `Hola ${currentUser} 💕`
+      loadDashboardStats()
     })
   })
 
-  document.getElementById("check-mode-btn").addEventListener("click", () => {
-    showScreen("checking")
+  checkModeBtn.addEventListener("click", () => {
+    document.getElementById("checking-user").textContent = `Control de Reglas - ${currentUser}`
+    document.getElementById("current-date").textContent = new Date().toLocaleDateString("es-ES", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
     initCheckingMode()
+    showScreen("checking")
   })
 
-  document.getElementById("view-mode-btn").addEventListener("click", () => {
-    showScreen("results")
+  viewModeBtn.addEventListener("click", () => {
+    const targetUser = currentUser === "Oscar" ? "Yuritzy" : "Oscar" // Default to viewing other
+    // Update toggle buttons
+    if (viewOscarBtn && viewYuritzyBtn) {
+      viewOscarBtn.classList.toggle("active", targetUser === "Oscar")
+      viewYuritzyBtn.classList.toggle("active", targetUser === "Yuritzy")
+    }
+
     initResultsMode()
+    showScreen("results")
   })
 
-  document.querySelectorAll(".back-btn").forEach((btn) => {
-    btn.addEventListener("click", goBack)
+  backBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      showScreen("modeSelection")
+    })
   })
+
+  if (backBtnSimple) {
+    backBtnSimple.addEventListener("click", () => {
+      showScreen("userSelection")
+      currentUser = null
+    })
+  }
 
   document.getElementById("save-progress-btn").addEventListener("click", saveProgress)
   document.getElementById("complete-session-btn").addEventListener("click", completeSession)
@@ -99,22 +140,41 @@ function setupEventListeners() {
   document.getElementById("prev-date-btn").addEventListener("click", () => changeResultsDate(-1))
   document.getElementById("next-date-btn").addEventListener("click", () => changeResultsDate(1))
   document.getElementById("download-pdf-btn").addEventListener("click", downloadPDF)
+
+  if (viewOscarBtn && viewYuritzyBtn) {
+    viewOscarBtn.addEventListener("click", () => {
+      const targetUser = "Oscar"
+      viewOscarBtn.classList.add("active")
+      viewYuritzyBtn.classList.remove("active")
+      loadAndDisplayResults(targetUser)
+    })
+
+    viewYuritzyBtn.addEventListener("click", () => {
+      const targetUser = "Yuritzy"
+      viewYuritzyBtn.classList.add("active")
+      viewOscarBtn.classList.remove("active")
+      loadAndDisplayResults(targetUser)
+    })
+  }
+}
+
+function loadDashboardStats() {
+  // In a real app, fetch this from Supabase
+  // For now, we'll just show some encouraging numbers or randoms for demo
+  document.getElementById("streak-value").textContent = Math.floor(Math.random() * 10) + 1
+  document.getElementById("total-checks").textContent = Math.floor(Math.random() * 50) + 10
+  document.getElementById("last-check-date").textContent = "Hoy"
 }
 
 function showScreen(screenName) {
-  Object.values(screens).forEach((screen) => screen.classList.remove("active"))
-  screens[screenName].classList.add("active")
-}
+  // Handle both string names and element references
+  const screenElement = typeof screenName === "string" ? screens[screenName] : screenName
 
-function goBack() {
-  const activeScreen = Object.entries(screens).find(([_, screen]) => screen.classList.contains("active"))?.[0]
+  Object.values(screens).forEach((screen) => {
+    if (screen) screen.classList.remove("active")
+  })
 
-  if (activeScreen === "modeSelection") {
-    showScreen("userSelection")
-    currentUser = null
-  } else if (activeScreen === "checking" || activeScreen === "results") {
-    showScreen("modeSelection")
-  }
+  if (screenElement) screenElement.classList.add("active")
 }
 
 async function initCheckingMode() {

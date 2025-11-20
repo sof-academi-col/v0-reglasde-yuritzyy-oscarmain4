@@ -18,11 +18,15 @@
                 <p class="subtitle">¿Quién eres?</p>
                 <div class="user-buttons">
                     <button class="user-btn" data-user="Oscar">
-                        <div class="user-avatar">👑</div>
+                        <div class="user-avatar-img">
+                            <img src="public/oscar.jpg" alt="Oscar">
+                        </div>
                         <span class="user-name">Oscar</span>
                     </button>
                     <button class="user-btn" data-user="Yuritzy">
-                        <div class="user-avatar">👸</div>
+                        <div class="user-avatar-img">
+                            <img src="public/yuritzy.jpg" alt="Yuritzy">
+                        </div>
                         <span class="user-name">Yuritzy</span>
                     </button>
                 </div>
@@ -30,26 +34,64 @@
             </div>
         </div>
 
-        <!-- Mode Selection Screen -->
+        <!-- Dashboard Screen (formerly Mode Selection) -->
         <div id="mode-selection" class="screen">
-            <div class="selection-card">
-                <div class="user-header">
-                    <h2 id="welcome-user" class="welcome-text"></h2>
+            <div class="dashboard-container">
+                <div class="dashboard-header">
+                    <div class="user-welcome">
+                        <div class="welcome-avatar">
+                            <img id="dashboard-user-img" src="/placeholder.svg" alt="User">
+                        </div>
+                        <div class="welcome-text-container">
+                            <span class="greeting">Hola, mi amor</span>
+                            <h2 id="welcome-user" class="username"></h2>
+                        </div>
+                    </div>
+                    <div class="love-badge">
+                        <span>Juntos Siempre</span>
+                        <span class="heart-pulse">❤️</span>
+                    </div>
                 </div>
-                <p class="subtitle">¿Qué deseas hacer?</p>
-                <div class="mode-buttons">
-                    <button id="check-mode-btn" class="mode-btn">
-                        <div class="mode-icon">✅</div>
-                        <span class="mode-title">Marcar Reglas</span>
-                        <span class="mode-description">Registra si cumpliste las reglas hoy</span>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-value" id="streak-value">0</div>
+                        <div class="stat-label">Días Seguidos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value" id="total-checks">0</div>
+                        <div class="stat-label">Total Chequeos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📅</div>
+                        <div class="stat-value" id="last-check-date">Hoy</div>
+                        <div class="stat-label">Último Registro</div>
+                    </div>
+                </div>
+
+                <div class="action-cards">
+                    <button id="check-mode-btn" class="action-card primary">
+                        <div class="card-bg-icon">✅</div>
+                        <div class="card-content">
+                            <h3>Marcar Reglas de Hoy</h3>
+                            <p>Registra tu cumplimiento diario</p>
+                        </div>
+                        <div class="card-arrow">→</div>
                     </button>
-                    <button id="view-mode-btn" class="mode-btn">
-                        <div class="mode-icon">👀</div>
-                        <span class="mode-title">Ver Resultados</span>
-                        <span class="mode-description">Ver los resultados del otro</span>
+
+                    <button id="view-mode-btn" class="action-card secondary">
+                        <div class="card-bg-icon">👀</div>
+                        <div class="card-content">
+                            <h3>Ver Historial</h3>
+                            <p>Revisa cómo vamos cumpliendo</p>
+                        </div>
+                        <div class="card-arrow">→</div>
                     </button>
                 </div>
-                <button class="back-btn">← Atrás</button>
+
+                <button class="back-btn-simple">Cerrar Sesión</button>
             </div>
         </div>
 
@@ -57,16 +99,18 @@
         <div id="checking-screen" class="screen">
             <div class="checking-container">
                 <div class="checking-header">
-                    <h2 id="checking-user" class="checking-title"></h2>
-                    <div class="date-display">
-                        <span class="date-label">Fecha:</span>
-                        <span id="current-date" class="date-value"></span>
+                    <div class="header-row">
+                        <h2 class="checking-title">Chequeo Diario</h2>
+                        <div class="date-display">
+                            <span id="current-date" class="date-value"></span>
+                        </div>
                     </div>
+                    <p class="checking-subtitle">Sé honesto/a, la confianza es lo primero 💕</p>
                 </div>
 
                 <div class="progress-info">
                     <div class="progress-text">
-                        <span id="checked-count">0</span> / <span id="total-rules">30</span> reglas marcadas
+                        <span id="checked-count">0</span> / <span id="total-rules">30</span>
                     </div>
                     <div class="progress-bar-container">
                         <div id="checking-progress" class="progress-bar-fill"></div>
@@ -79,14 +123,14 @@
 
                 <div class="action-buttons">
                     <button id="save-progress-btn" class="action-btn secondary">
-                        💾 Guardar Progreso
+                        💾 Guardar
                     </button>
                     <button id="complete-session-btn" class="action-btn primary" disabled>
-                        ✨ Completar Sesión
+                        ✨ Completar
                     </button>
                 </div>
 
-                <button class="back-btn">← Atrás</button>
+                <button class="back-btn">← Volver al Dashboard</button>
             </div>
         </div>
 
@@ -94,12 +138,17 @@
         <div id="results-screen" class="screen">
             <div class="results-container">
                 <div class="results-header">
-                    <h2 class="results-title">Resultados de <span id="target-user"></span></h2>
+                    <h2 class="results-title">Historial de Amor</h2>
                     <div class="date-selector">
                         <button id="prev-date-btn" class="date-nav-btn">←</button>
                         <span id="selected-date" class="selected-date"></span>
                         <button id="next-date-btn" class="date-nav-btn">→</button>
                     </div>
+                </div>
+
+                <div class="user-toggle">
+                    <button class="toggle-btn active" id="view-oscar">Oscar</button>
+                    <button class="toggle-btn" id="view-yuritzy">Yuritzy</button>
                 </div>
 
                 <div id="results-status" class="results-status">
@@ -112,11 +161,11 @@
 
                 <div class="action-buttons">
                     <button id="download-pdf-btn" class="action-btn primary">
-                        📥 Descargar PDF
+                        📥 Descargar Reporte
                     </button>
                 </div>
 
-                <button class="back-btn">← Atrás</button>
+                <button class="back-btn">← Volver al Dashboard</button>
             </div>
         </div>
     </div>

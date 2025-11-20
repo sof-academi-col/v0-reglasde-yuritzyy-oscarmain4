@@ -16,50 +16,30 @@
             <!-- Header -->
             <header class="header">
                 <div class="header-content">
+                    <div class="couple-profile">
+                        <div class="profile-image">
+                            <img src="public/oscar.jpg" alt="Oscar">
+                        </div>
+                        <div class="heart-divider">
+                            <span class="heart-icon">💕</span>
+                        </div>
+                        <div class="profile-image">
+                            <img src="public/yuritzy.jpg" alt="Yuritzy">
+                        </div>
+                    </div>
                     <div class="header-title-container">
                         <h1 class="header-title">
-                            <span class="heart-icon">💕</span>
                             <span id="user-name-display">Oscar & Yuritzy</span>
-                            <span class="heart-icon">💕</span>
                         </h1>
                         <div class="header-subtitle">
-                            <span id="rule-count">29 Reglas</span>
+                            <span id="rule-count">29 Reglas de Amor</span>
                         </div>
                     </div>
                 </div>
             </header>
 
-            <!-- Rules Viewer -->
-            <main class="rules-viewer">
-                <div class="rule-card">
-                    <div class="rule-number">
-                        <span id="current-rule-number">1</span>
-                        <span class="rule-total">/ <span id="total-rules">29</span></span>
-                    </div>
-                    
-                    <div class="rule-content">
-                        <div class="rule-icon">💖</div>
-                        <p id="rule-text" class="rule-text">
-                            No me gusta que tengas más amigos aparte de los que ya algo he sabido. No más amigos ni amiguitos.
-                        </p>
-                    </div>
-
-                    <div class="rule-navigation">
-                        <button id="prev-rule" class="nav-btn nav-prev">
-                            <span>←</span>
-                            <span class="nav-text">Anterior</span>
-                        </button>
-                        <button id="next-rule" class="nav-btn nav-next">
-                            <span class="nav-text">Siguiente</span>
-                            <span>→</span>
-                        </button>
-                    </div>
-
-                    <div class="progress-bar">
-                        <div id="progress-fill" class="progress-fill"></div>
-                    </div>
-                </div>
-
+            <!-- Rules Grid -->
+            <main class="rules-container">
                 <!-- Golden Rule -->
                 <div class="golden-rule">
                     <div class="golden-icon">✨</div>
@@ -72,11 +52,15 @@
                     </div>
                 </div>
 
+                <div id="rules-grid" class="rules-grid">
+                    <!-- Rules will be generated here -->
+                </div>
+
                 <!-- Control Link -->
                 <div class="control-section">
                     <a href="tracking.html" class="control-btn">
                         <span class="control-icon">📊</span>
-                        <span>Control de Cumplimiento</span>
+                        <span>Ir al Dashboard</span>
                     </a>
                 </div>
             </main>

@@ -44,11 +44,13 @@ const ruleText = document.getElementById("rule-text")
 const prevRuleBtn = document.getElementById("prev-rule")
 const nextRuleBtn = document.getElementById("next-rule")
 const progressFill = document.getElementById("progress-fill")
+const rulesGrid = document.getElementById("rules-grid")
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
   setupEventListeners()
   updateRuleDisplay()
+  renderRules()
 })
 
 function setupEventListeners() {
@@ -93,4 +95,26 @@ function updateRuleDisplay() {
   // Update navigation buttons
   prevRuleBtn.disabled = currentRuleIndex === 0
   nextRuleBtn.disabled = currentRuleIndex === currentRules.length - 1
+}
+
+function renderRules() {
+  rulesGrid.innerHTML = ""
+
+  commonRules.forEach((rule, index) => {
+    const card = document.createElement("div")
+    card.className = "rule-card-item"
+
+    // Add delay for animation
+    card.style.animationDelay = `${index * 0.05}s`
+
+    card.innerHTML = `
+      <div class="card-number">#${index + 1}</div>
+      <div class="card-content">
+        <p>${rule}</p>
+      </div>
+      <div class="card-decoration"></div>
+    `
+
+    rulesGrid.appendChild(card)
+  })
 }
