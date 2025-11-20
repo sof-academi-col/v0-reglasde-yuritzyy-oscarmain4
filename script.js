@@ -32,16 +32,11 @@ const commonRules = [
 ]
 
 // State
-let currentUser = null
-let currentRules = commonRules
+const currentRules = commonRules
 let currentRuleIndex = 0
 
 // DOM Elements
-const userSelection = document.getElementById("user-selection")
 const mainContent = document.getElementById("main-content")
-const userButtons = document.querySelectorAll(".user-btn")
-const backBtn = document.getElementById("back-btn")
-const userNameDisplay = document.getElementById("user-name-display")
 const ruleCount = document.getElementById("rule-count")
 const currentRuleNumber = document.getElementById("current-rule-number")
 const totalRulesEl = document.getElementById("total-rules")
@@ -52,31 +47,11 @@ const progressFill = document.getElementById("progress-fill")
 
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
-  // Check URL for user parameter
-  const urlParams = new URLSearchParams(window.location.search)
-  const userParam = urlParams.get("user")
-
-  if (userParam === "Oscar" || userParam === "Yuritzy") {
-    selectUser(userParam)
-  }
-
   setupEventListeners()
+  updateRuleDisplay()
 })
 
 function setupEventListeners() {
-  // User selection buttons
-  userButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const user = btn.getAttribute("data-user")
-      selectUser(user)
-    })
-  })
-
-  // Back button
-  backBtn.addEventListener("click", () => {
-    showUserSelection()
-  })
-
   // Navigation buttons
   prevRuleBtn.addEventListener("click", () => {
     if (currentRuleIndex > 0) {
@@ -94,8 +69,6 @@ function setupEventListeners() {
 
   // Keyboard navigation
   document.addEventListener("keydown", (e) => {
-    if (mainContent.style.display === "none") return
-
     if (e.key === "ArrowLeft" && currentRuleIndex > 0) {
       currentRuleIndex--
       updateRuleDisplay()
@@ -104,41 +77,6 @@ function setupEventListeners() {
       updateRuleDisplay()
     }
   })
-}
-
-function selectUser(user) {
-  currentUser = user
-  currentRules = commonRules
-  currentRuleIndex = 0
-
-  // Update URL
-  const url = new URL(window.location)
-  url.searchParams.set("user", user)
-  window.history.pushState({}, "", url)
-
-  showMainContent()
-}
-
-function showUserSelection() {
-  userSelection.style.display = "flex"
-  mainContent.style.display = "none"
-
-  // Clear URL parameter
-  const url = new URL(window.location)
-  url.searchParams.delete("user")
-  window.history.pushState({}, "", url)
-}
-
-function showMainContent() {
-  userSelection.style.display = "none"
-  mainContent.style.display = "flex"
-
-  // Update header
-  userNameDisplay.textContent = currentUser
-  ruleCount.textContent = `${currentRules.length} Reglas`
-  totalRulesEl.textContent = currentRules.length
-
-  updateRuleDisplay()
 }
 
 function updateRuleDisplay() {
